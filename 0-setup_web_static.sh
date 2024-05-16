@@ -9,7 +9,7 @@ mkdir -p "/data/web_static/"
 mkdir -p "/data/web_static/releases/"
 mkdir -p "/data/web_static/shared/"
 mkdir -p "/data/web_static/releases/test/"
-printf "%s\n\t<head>\n</head>\n<body>\n\t\tHolberton School\n\t</body>\n</html>" >> /data/web_static/releases/test/index.html
+printf "<html>\n\t<head>\n</head>\n<body>\n\t\tHolberton School\n\t</body>\n</html>" >> /data/web_static/releases/test/index.html
 ln -sf /data/web_static/releases/test /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
 old_str="server_name _;"
