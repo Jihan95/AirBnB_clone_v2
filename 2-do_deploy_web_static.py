@@ -7,7 +7,8 @@ import os
 from fabric.api import run, put, env
 env.hosts = ['52.3.243.155', '35.153.66.84']
 env.user = 'ubuntu'
-env.key_filename = 'my_ssh_private_key'
+env.key_filename = '~/.ssh/school'
+env.use_ssh_config = True
 
 
 def do_deploy(archive_path):
@@ -16,30 +17,39 @@ def do_deploy(archive_path):
     """
     if not os.path.exists(archive_path):
         return False
+
     try:
         file_name = os.path.basename(archive_path)
         folder_name = file_name.split('.')[0]
-        release_path = f'/data/web_static/releases/{folder_name}'
+        release_path = f'/data/web_static/releases/{folder_name}/'
         tmp_path = f'/tmp/{file_name}'
-        current_path = f'/data/web_static/current'
-        for host in env.hosts:
-            put(archive_path, f'{tmp_path}')
-            run(f"rm -rf {release_path}/")
-            run(f"mkdir -p {release_path}/")
-            result = run(f'tar -xzvf {tmp_path} -C {release_path}/', warn=True)
-            if result.failed:
-                return False
-            result = run(f'rm {tmp_path}', warn=True)
-            if result.failed:
-                return False
-            run(f'mv /data/web_static/releases/{folder_name}/web_static/* {release_path}/')
-            run(f'rm -rf /data/web_static/releases/{folder_name}/web_static')
-            result = run('rm -rf {current_path}', warn=True)
-            if result.failed:
-                return False
-            result = run(f'ln -sf {release_path}/ {current_path}', warn=True)
-            if result.failed:
-                return False
+        current_path = '/data/web_static/current'
+
+        put(archive_path, tmp_path, use_sudo=True)
+
+        run(f"rm -rf {release_path}", warn_only=True)
+        run(f"mkdir -p {release_path}", warn_only=True)
+
+        result = run(f'tar -xzvf {tmp_path} -C {release_path}', warn_only=True)
+        if result.failed:
+            return False
+
+        result = run(f'rm {tmp_path}', warn_only=True)
+        if result.failed:
+            return False
+
+        run(f'mv {release_path}/web_static/* {release_path}', warn_only=True)
+        run(f'rm -rf {release_path}/web_static', warn_only=True)
+
+        result = run(f'rm -rf {current_path}', warn_only=True)
+        if result.failed:
+            return False
+
+        result = run(f'ln -sf {release_path} {current_path}', warn_only=True)
+        if result.failed:
+            return False
+        print("New version deployed!")
+        return True
+
     except Exception:
         return False
-    return True
