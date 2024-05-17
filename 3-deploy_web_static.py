@@ -5,11 +5,12 @@ a Python sctript to pack files in web stack folder
 import os
 import fabric.api as fab
 from datetime import datetime
-from fabric.api import run, put, env,task, runs_once
+from fabric.api import run, put, env, task, runs_once
 env.hosts = ['52.3.243.155', '35.153.66.84']
 env.user = 'ubuntu'
 env.key_filename = '~/.ssh/school'
 env.use_ssh_config = True
+
 
 @runs_once
 def do_pack():
@@ -29,6 +30,7 @@ def do_pack():
         if os.path.exists(f'{path}/{filename}'):
             return f'{path}/{filename}'
     return None
+
 
 @task
 def do_deploy(archive_path):
@@ -73,6 +75,7 @@ def do_deploy(archive_path):
 
     except Exception:
         return False
+
 
 @task
 def deploy():
