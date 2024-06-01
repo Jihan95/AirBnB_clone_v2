@@ -20,7 +20,7 @@ def hbnb():
 @app.route("/c/<text>", strict_slashes=False)
 def c(text):
     """ c is fun """
-    return f"c {text.replace('_', ' ')}"
+    return f"C {text.replace('_', ' ')}"
 
 
 @app.errorhandler(404)
