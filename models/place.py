@@ -86,7 +86,6 @@ class Place(BaseModel, Base):
                 amenitiesList.append(amenity)
         return amenitiesList
 
-
     @property
     def reviews(self):
         """
