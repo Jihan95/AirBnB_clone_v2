@@ -1,7 +1,10 @@
 #!/usr/bin/python3
-"""Return string when navigating to root dir"""
-from flask import Flask, render_template, g
-import models
+"""
+APP MODULE
+"""
+
+from flask import Flask, render_template
+from models import storage
 from models.state import State
 
 
@@ -10,15 +13,19 @@ app = Flask(__name__, template_folder='templates')
 
 @app.route('/states_list', strict_slashes=False)
 def list_states():
-    """view that lists all of the states"""
-    states = models.storage.all(State).values()
+    """
+    show the list of all State objects present in DBStorage sorted by name
+    """
+    states = storage.all(State).values()
     return render_template('7-states_list.html', states=states)
 
 
 @app.teardown_appcontext
 def tear_down(error):
-    """remove the current SQLAlchemy Session"""
-    models.storage.close()
+    """
+    remove the current SQLAlchemy Session
+    """
+    storage.close()
 
 
 if __name__ == '__main__':
