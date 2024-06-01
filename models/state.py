@@ -26,14 +26,13 @@ class State(BaseModel, Base):
     else:
         name = ""
 
-        @property
-        def cities(self):
-            """return the list of City objects from
-            storage linked to the current State"""
-            from models import storage
-            list_of_cities = []
-            allcities = storage.all(City)
-            for city in allcities.values():
-                if city.state_id == self.id:
-                    list_of_cities.append(city)
-            return list_of_cities
+    @property
+    def cities(self):
+        """cities property"""
+        from models import storage
+        list_of_cities = []
+        allcities = storage.all(City)
+        for city in allcities.values():
+            if city.state_id == self.id:
+                list_of_cities.append(city)
+        return list_of_cities

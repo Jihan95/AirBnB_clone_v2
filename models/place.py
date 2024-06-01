@@ -57,32 +57,48 @@ class Place(BaseModel, Base):
             cascade='all, delete'
             )
 
-        amenities = relationship(
-            'Amenity',
-            backref='place',
-            secondary='place_amenity',
-            viewonly=False
-            )
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                 viewonly=False,
+                                 back_populates="place_amenities")
+    else:
+        city_id = ""
+        user_id = ""
+        name = ""
+        description = ""
+        number_rooms = 0
+        number_bathrooms = 0
+        max_guest = 0
+        price_by_night = 0
+        latitude = 0.0
+        longitude = 0.0
+        amenity_ids = []
+
+    @property
+    def amenities(self):
+        """
+        amenities method
+        """
+        from models import storage
+        amenitiesList = []
+        amenitiesAll = storage.all(Amenity)
+        for amenity in amenitiesAll.values():
+            if amenity.id in self.amenity_ids:
+                amenitiesList.append(amenity)
+        return amenitiesList
+
 
     @property
     def reviews(self):
         """
         reviews method
         """
-        from models.engine import file_storage
-
-        all_reviews = file_storage.FileStorage.all(self)
-        return all_reviews
-
-    @property
-    def amenities(self):
-        """
-        returns the list of Amenity instances based
-        on the attribute amenity_ids that contains
-        all Amenity.id
-        """
-        # return self.amenity_ids
-        ...
+        from models import storage
+        reviewsList = []
+        reviewsAll = storage.all(Review)
+        for review in reviewsAll.values():
+            if review.place_id in self.id:
+                reviewsList.append(review)
+        return reviewsList
 
     @amenities.setter
     def amenities(self, obj=None):
