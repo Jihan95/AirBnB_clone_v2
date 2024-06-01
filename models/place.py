@@ -5,7 +5,7 @@ Place class, a subclass of BaseModel class
 from sqlalchemy import Column, String, Integer, ForeignKey, Float, Table
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
-import os 
+import os
 
 place_amenity = Table(
     'place_amenity',

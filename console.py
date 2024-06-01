@@ -75,7 +75,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         if class_name in self.Classes_dict.keys():
-            new_obj = self.Classes_dict[class_name]() 
+            new_obj = self.Classes_dict[class_name]()
             for argument in arguments:
                 attribute, value = argument.split('=')
                 if '"' in value:

@@ -57,7 +57,6 @@ class FileStorage:
             temp = {}
             temp.update(FileStorage.__objects)
             for key, val in temp.items():
-                print (f"{key}: {val}")
                 temp[key] = val.to_dict()
             json.dump(temp, f)
 
