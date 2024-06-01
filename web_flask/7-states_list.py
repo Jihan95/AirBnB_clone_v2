@@ -9,15 +9,14 @@ app = Flask(__name__)
 
 @app.route("/states_list", strict_slashes=False)
 def states_list():
-    """
-    lists all State objects present in DBStorage sorted by name (A->Z)
-    """
+    """ lists all State objects present in DBStorage sorted by name (A->Z)"""
     states = storage.all(State)
-    return render_template('7-states_list.html', states=states)
+    states_list = list(states.values())
+    return render_template('7-states_list.html', states=states_list)
 
 
 @app.teardown_appcontext
-def teardown_appcontext(e):
+def teardown(e):
     """ remove the current SQLAlchemy Session """
     storage.close()
 
