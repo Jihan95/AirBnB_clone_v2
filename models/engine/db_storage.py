@@ -16,6 +16,9 @@ from models.user import User
 
 
 class DBStorage:
+    """
+    DB storage class
+    """
     __engine = None
     __session = None
 
