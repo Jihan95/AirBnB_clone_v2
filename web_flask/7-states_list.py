@@ -7,9 +7,9 @@ app = Flask(__name__)
 
 
 @app.teardown_appcontext
-def tear_down(error):
+def close(e):
     """remove the current SQLAlchemy Session"""
-    models.storage.close()
+    storage.close()
 
 
 if __name__ == "__main__":
