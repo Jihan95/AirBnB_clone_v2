@@ -2,13 +2,14 @@
 """
 starts a Flask web application
 """
-from flask import Flask, render_template
-from models.state import State
-from models import storage
-app = Flask(__name__)
 
 
 if __name__ == '__main__':
+    from flask import Flask, render_template
+    from models.state import State
+    from models import storage
+    app = Flask(__name__)
+
     @app.route('/states_list', strict_slashes=False)
     def states_list():
         """display a HTML page with the states listed in alphabetical order"""
